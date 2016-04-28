@@ -21,21 +21,11 @@ class StaticExtension {
 
     def boolean debugLogging = false
 
-    def String resourcePrefix = "static_value_"
-
     def setDebugLogging(boolean enable) {
         debugLogging = enable
     }
 
     def boolean getDebugLogging() {
         return debugLogging
-    }
-
-    def setResourcePrefix(String resourcePrefix) {
-        this.resourcePrefix = resourcePrefix
-    }
-
-    def String getResourcePrefix() {
-        return resourcePrefix
     }
 }

@@ -48,7 +48,6 @@ class StaticPlugin implements Plugin<Project> {
                 String flavorString = capitalise(variant.flavorName) + capitalise(variant.buildType.name)
 
                 boolean debugLogging = project.staticValues.debugLogging
-                String resourcePrefix = project.staticValues.resourcePrefix
 
                 String variantBuildDir = "${project.buildDir}/generated/source/static/${variant.dirName}"
                 String variantResourceFile = "${project.buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml"
@@ -62,7 +61,7 @@ class StaticPlugin implements Plugin<Project> {
 
                 String taskName = ":" + project.name + ":staticValues" + flavorString
                 //noinspection GrUnresolvedAccess,GroovyAssignabilityCheck
-                StaticGenerator generator = new StaticGenerator(variantBuildDir, taskName, variantResourceFile, resourcePrefix, debugLogging)
+                StaticGenerator generator = new StaticGenerator(variantBuildDir, taskName, variantResourceFile, debugLogging)
                 Task mergeResourcesTask = project.tasks["merge${flavorString}Resources"]
                 mergeResourcesTask.doLast {
                     generator.buildStatic()

@@ -44,7 +44,10 @@ public final class StaticGenerator {
     private static final String XML_TYPE_STRING = "string";
 
     private static final String XML_ATTR_NAME = "name";
+    private static final String XML_ATTR_STATIC = "static";
     private static final String XML_ATTR_TYPE = "type";
+
+    private static final String TRUE = "true";
 
     private static final Logger log = LoggerFactory.getLogger(StaticGenerator.class.getSimpleName());
 
@@ -53,9 +56,6 @@ public final class StaticGenerator {
 
     @NonNull
     private final String mVariantResourceFile;
-
-    @NonNull
-    private final String mResourcePrefix;
 
     @NonNull
     private final String mTaskName;
@@ -74,19 +74,16 @@ public final class StaticGenerator {
 
     public StaticGenerator(@NonNull String baseOutputDir,
                            @NonNull String taskName,
-                           @NonNull String variantResourceDir,
-                           @NonNull String resourcePrefix,
+                           @NonNull String variantResourceFile,
                            boolean debugLogging) {
         mBaseOutputDir = baseOutputDir;
         mTaskName = taskName;
-        mVariantResourceFile = variantResourceDir;
-        mResourcePrefix = resourcePrefix;
+        mVariantResourceFile = variantResourceFile;
         mDebugLogging = debugLogging;
 
         log("StaticGenerator constructed\n" +
                 "    Output: " + mBaseOutputDir + "\n" +
                 "    Resource File: " + mVariantResourceFile + "\n" +
-                "    Resource Prefix: " + mResourcePrefix + "\n" +
                 "    Package: " + PACKAGE_NAME + "\n" +
                 "    Class: " + CLASS_NAME + "\n" +
                 "    Logging: " + mDebugLogging);
@@ -262,8 +259,9 @@ public final class StaticGenerator {
                         currentItemType = currentTag;
                 }
 
+                String staticTag = xpp.getAttributeValue(null, XML_ATTR_STATIC);
                 String resourceName = xpp.getAttributeValue(null, XML_ATTR_NAME);
-                if (!isEmpty(resourceName) && resourceName.contains(mResourcePrefix)) {
+                if (TRUE.equals(staticTag) && !isEmpty(resourceName)) {
                     currentItemName = resourceName;
                 } else {
                     currentItemType = null;
@@ -315,7 +313,7 @@ public final class StaticGenerator {
 
     @NonNull
     private String[] getComments() {
-        return new String[]{STATIC_HASH, "Package: " + PACKAGE_NAME, "Class: " + CLASS_NAME, "Debug: " + mDebugLogging, "Resource Prefix: " + mResourcePrefix};
+        return new String[]{STATIC_HASH, "Package: " + PACKAGE_NAME, "Class: " + CLASS_NAME, "Debug: " + mDebugLogging};
     }
 
     @NonNull

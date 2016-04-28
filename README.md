@@ -14,8 +14,11 @@ and Java. Traditionally this would require using `context.getResources().getBool
 for example. The alternative was to put the values into static final fields manually and copy paste the values (this
 is a common paradigm for preference keys for example).
 
-I decided it would be better to give resources a special prefix, and generate an `S` class containing a copy of the
-resources generated at compile time, for faster access, guaranteed matching values, and simplified code.
+I decided it would be better to give resources a special tag `static="true"`, and generate an `S` class containing a
+copy of the resources generated at compile time, for faster access, guaranteed matching values, and simplified code.
+
+The `S` class is syntactically the same as the standard `R` class, except it contains the actual values of the resources,
+rather than a resource ID reference.
 
 ## Gradle Setup
 
@@ -46,16 +49,6 @@ apply plugin: 'me.oriley.static-plugin'
 ```
 
 
- * Specify a resource prefix to generate fields for. Be sure to add this after the `apply plugin` line:
- 
- 
-```gradle
-staticValues {
-    resourcePrefix = "static_value_" // This is the default value if nothing is specified
-}
-```
-
-
  * That's it! You're static values will now be compile time safe and accessible without using a context or wasting
  time on `Context.getResources()` calls. Let's move on to using them.
 
@@ -68,18 +61,19 @@ time and will not change for the life of the application, only values in the def
 considered. Values that change due to configuration (i.e. `values-xhdpi`, `values-en` or `values-port` etc) are not
 suitable for use as a static value.
 
-In any of your default values files, add the resources you need to have synchronised with your java code, making sure
-to begin them with the same resource prefix you specified earlier:
+To mark a value as being static, add a `static="true"` tag to the XML entry. Only values containing this tag will be
+added to the generated source code. In any of your default values files, add the resources you need to have synchronised
+with your java code like so:
 
 #### Note: Currently supports `bool`, `integer` and `string` resource types
 
 ```xml
-    <bool name="static_value_pref_test_enable">false</bool>
-    <bool name="static_value_pref_default_enable">true</bool>
-    <integer name="static_value_pref_test_count">69</integer>
-    <integer name="static_value_pref_default_count">0</integer>
-    <string name="static_value_pref_key_enable">pref_enable</string>
-    <string name="static_value_pref_key_count">pref_count</string>
+    <bool name="pref_test_enable" static="true">false</bool>
+    <bool name="pref_default_enable" static="true">true</bool>
+    <integer name="pref_test_count" static="true">69</integer>
+    <integer name="pref_default_count" static="true">0</integer>
+    <string name="pref_key_enable" static="true">pref_enable</string>
+    <string name="pref_key_count" static="true">pref_count</string>
 ```
 
 
@@ -93,21 +87,21 @@ import java.lang.String;
 
 public final class S {
     public static final class bool {
-        public static final boolean static_value_pref_test_enable = false;
+        public static final boolean pref_test_enable = false;
 
-        public static final boolean static_value_pref_default_enable = true;
+        public static final boolean pref_default_enable = true;
     }
 
     public static final class integer {
-        public static final int static_value_pref_test_count = 69;
+        public static final int pref_test_count = 69;
 
-        public static final int static_value_pref_default_count = 0;
+        public static final int pref_default_count = 0;
     }
 
     public static final class string {
-        public static final String static_value_pref_key_enable = "pref_enable";
+        public static final String pref_key_enable = "pref_enable";
 
-        public static final String static_value_pref_key_count = "pref_count";
+        public static final String pref_key_count = "pref_count";
     }
 }
 ```
@@ -125,11 +119,11 @@ This is what the `preferences.xml` would look like in both cases:
 
     <!-- Note: other attributes omitted for clarity -->
 
-    <CheckBoxPreference android:key="@string/static_value_pref_key_enable"
-                        android:defaultValue="@bool/static_value_pref_default_enable"/>
+    <CheckBoxPreference android:key="@string/pref_key_enable"
+                        android:defaultValue="@bool/pref_default_enable"/>
 
-    <SeekBarPreference android:key="@string/static_value_pref_key_count"
-                       android:defaultValue="@integer/static_value_pref_default_count"/>
+    <SeekBarPreference android:key="@string/pref_key_count"
+                       android:defaultValue="@integer/pref_default_count"/>
 
 </PreferenceScreen>
 ```
@@ -148,20 +142,21 @@ This is what it looks like without Static Values:
         addPreferencesFromResource(R.xml.preferences);
 
         Activity activity = getActivity();
-        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(activity.getString(R.string.static_value_pref_key_enable));
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(activity.getString(R.string.pref_key_enable));
         if (TESTING) {
-            checkBoxPreference.setChecked(activity.getResources().getBoolean(R.bool.static_value_pref_test_enable));
+            checkBoxPreference.setChecked(activity.getResources().getBoolean(R.bool.pref_test_enable));
         }
 
-        SeekBarPreference seekBarPreference = (SeekBarPreference) findPreference(activity.getString(R.string.static_value_pref_key_count));
+        SeekBarPreference seekBarPreference = (SeekBarPreference) findPreference(activity.getString(R.string.pref_key_count));
         if (TESTING) {
-            seekBarPreference.setProgress(activity.getResources().getInteger(R.integer.static_value_pref_test_count));
+            seekBarPreference.setProgress(activity.getResources().getInteger(R.integer.pref_test_count));
         }
     }
 ```
 
 
-And this is what that same code would look like when taking advantage of Static Values to generate the `S` class:
+And this is what that same code would look like when taking advantage of Static Values to generate the `S` class
+(be sure to import `me.oriley.staticvalues.S` wherever you need to use them):
 
 
 ```java
@@ -170,14 +165,14 @@ And this is what that same code would look like when taking advantage of Static 
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
-        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(S.string.static_value_pref_key_enable);
+        CheckBoxPreference checkBoxPreference = (CheckBoxPreference) findPreference(S.string.pref_key_enable);
         if (TESTING) {
-            checkBoxPreference.setChecked(S.bool.static_value_pref_test_enable);
+            checkBoxPreference.setChecked(S.bool.pref_test_enable);
         }
 
-        SeekBarPreference seekBarPreference = (SeekBarPreference) findPreference(S.string.static_value_pref_key_count);
+        SeekBarPreference seekBarPreference = (SeekBarPreference) findPreference(S.string.pref_key_count);
         if (TESTING) {
-            seekBarPreference.setProgress(S.integer.static_value_pref_test_count);
+            seekBarPreference.setProgress(S.integer.pref_test_count);
         }
     }
 ```
