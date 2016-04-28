@@ -1,6 +1,6 @@
-[![Release](https://jitpack.io/v/com.github.oriley-me/static-values.svg)](https://jitpack.io/#com.github.oriley-me/static-values)
+[![Release](https://jitpack.io/v/com.github.oriley-me/staticvalues.svg)](https://jitpack.io/#com.github.oriley-me/staticvalues)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Build Status](https://travis-ci.org/oriley-me/static-values.svg?branch=master)](https://travis-ci.org/oriley-me/static-values)
+[![Build Status](https://travis-ci.org/oriley-me/staticvalues.svg?branch=master)](https://travis-ci.org/oriley-me/staticvalues)
 [![Dependency Status](https://www.versioneye.com/user/projects/5721e547fcd19a0039f183f4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5721e547fcd19a0039f183f4)
 
 # Static Values
@@ -24,7 +24,7 @@ rather than a resource ID reference.
 
 The first step to using Static Values is to add the plugin to your gradle files.
 
- * Add JitPack.io repo and `static-values` dependency to your buildscript:
+ * Add JitPack.io repo and `staticvalues` dependency to your buildscript:
 
 
 ```gradle
@@ -34,7 +34,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.oriley-me:static-values:0.1.0'
+        classpath 'com.github.oriley-me:staticvalues:0.2.0'
     }
 }
 ```
