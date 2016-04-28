@@ -71,6 +71,7 @@ suitable for use as a static value.
 In any of your default values files, add the resources you need to have synchronised with your java code, making sure
 to begin them with the same resource prefix you specified earlier:
 
+#### Note: Currently supports `bool`, `integer` and `string` resource types
 
 ```xml
     <bool name="static_value_pref_test_enable">false</bool>
