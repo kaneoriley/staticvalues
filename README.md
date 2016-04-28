@@ -1,7 +1,7 @@
 [![Release](https://jitpack.io/v/com.github.oriley-me/staticvalues.svg)](https://jitpack.io/#com.github.oriley-me/staticvalues)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![Build Status](https://travis-ci.org/oriley-me/staticvalues.svg?branch=master)](https://travis-ci.org/oriley-me/staticvalues)
-[![Dependency Status](https://www.versioneye.com/user/projects/5721e547fcd19a0039f183f4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5721e547fcd19a0039f183f4)
+[![Dependency Status](https://www.versioneye.com/user/projects/57220410ba37ce00464dfd4d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/57220410ba37ce00464dfd4d)
 
 # Static Values
 
