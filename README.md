@@ -3,11 +3,15 @@
 [![Build Status](https://travis-ci.org/oriley-me/staticvalues.svg?branch=master)](https://travis-ci.org/oriley-me/staticvalues)
 [![Dependency Status](https://www.versioneye.com/user/projects/57220410ba37ce00464dfd4d/badge.svg?style=flat)](https://www.versioneye.com/user/projects/57220410ba37ce00464dfd4d)
 
+
 # Static Values
+![Logo](artwork/icon.png)
 
 Easily generate static fields from select resource values, for faster access and guaranteed synchronisation of values.
 
+
 ## Why?
+
 
 Sometimes you have resources which never change according to configuration, but you need to be able to access via XML
 and Java. Traditionally this would require using `context.getResources().getBoolean(R.bool.static_value_pref_default)`
@@ -20,7 +24,9 @@ copy of the resources generated at compile time, for faster access, guaranteed m
 The `S` class is syntactically the same as the standard `R` class, except it contains the actual values of the resources,
 rather than a resource ID reference.
 
+
 ## Gradle Setup
+
 
 The first step to using Static Values is to add the plugin to your gradle files.
 
