@@ -52,9 +52,9 @@ class StaticPlugin implements Plugin<Project> {
                 String variantBuildDir = "${project.buildDir}/generated/source/static/${variant.dirName}"
                 String variantResourceFile = "${project.buildDir}/intermediates/res/merged/${variant.dirName}/values/values.xml"
 
-                // Add source to main sourceset
+                // Add source to variant source set
                 variant.sourceSets.each { sourceSet ->
-                    if (sourceSet.name == 'main') {
+                    if (sourceSet.name == variant.dirName) {
                         sourceSet.java.srcDir "${variantBuildDir}"
                     }
                 }
