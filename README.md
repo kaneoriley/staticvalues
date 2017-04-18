@@ -40,7 +40,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.github.oriley-me:staticvalues:0.2.0'
+        classpath 'com.github.oriley-me:staticvalues:0.3.1'
     }
 }
 ```
